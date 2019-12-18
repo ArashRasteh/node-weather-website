@@ -45,6 +45,7 @@ footer {
 }
 
 footer a {
+   color: #888888;
    text-decoration: none;
 }
 
@@ -68,7 +69,7 @@ div#main-content {
    text-decoration: none;
 }
 
-.page-about img.portrait {
+.page-About img.portrait {
    width: 250px;
 }
 
