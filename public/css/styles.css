@@ -28,6 +28,7 @@ img {
 body {
    color: #333333;
    font-family: arial, sans-serif;
+   font-size: 16px;
    max-width: 650px;
    margin: 0 auto;
    padding: 0 16px;
@@ -37,11 +38,15 @@ body {
    min-height: 100vh;
 }
 
+div#main-content {
+   flex-grow: 1;
+}
+
 footer {
    color: #888888;
    border-top: 1px solid #eeeeee;
-   margin-top: 16px;
-   padding: 16px 0;
+   margin-top: 1rem;
+   padding: 1rem 0;
 }
 
 footer a {
@@ -50,27 +55,65 @@ footer a {
 }
 
 header {
-   margin-top: 16px;
-   margin-bottom: 48px;
+   padding: 1rem 0;
+   display: flex;
+   align-items: center;
 }
 
-h1 {
-   font-size: 64px;
-   margin-bottom: 16px;
-}
-
-div#main-content {
+header h1 {
+   font-size: 1rem;
    flex-grow: 1;
+   margin: 0;
 }
 
-.nav-bar>a {
+.menu-bar {
+   position: relative;
+}
+
+img.menu-button {
+   opacity: 0.75;
+}
+
+.menu-items {
+   position: absolute;
+   right: 0;
+   padding: 0.5rem;
+   border-right: 1px solid #d2d2d2;
+   border-left: 1px solid #d2d2d2;
+   background-color: white;
+   display: none;
+}
+
+.menu-bar:hover .menu-items {
+   display: block;
+}
+
+.menu-items>a {
    color: #888888;
    margin-right: 16px;
    text-decoration: none;
+   display: block;
+   padding: 0.25rem;
 }
 
 .page-About img.portrait {
    width: 250px;
+}
+
+form#weather-app {
+   display: flex;
+   width: 100%;
+   justify-content: center;
+}
+
+form#weather-app input {
+    flex-grow: 1;
+    max-width: 60%;
+    max-width: calc( 100% - 85.7px);
+}
+
+form#weather-app button {
+   border-left: none;
 }
 
 input {
