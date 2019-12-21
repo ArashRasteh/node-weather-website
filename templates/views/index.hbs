@@ -7,7 +7,29 @@
    <button>Search</button>
 </form>
 
-<p id="forecast-1"></p>
-<p id="forecast-2"></p>
+<p id="forecast-1" style="text-align: center;">^ Use the search above to search for the weather at your location</p>
+<p id="forecast-2" style="margin-bottom: 3rem; text-align: center;"></p>
+
+<div id="full-forecast" style="display: none;">
+   <p class="forecast-city"></p>
+   <p class="forecast-date"></p>
+   <div class="forecast-icon-degrees">
+      <canvas id="forecast-icon" width="128" height="128"></canvas>
+      <div class="forecast-degrees">
+         <span class="forecast-degrees-num"></span>&#176;
+      </div>
+   </div>
+   <p class="forecast-summary"></p>
+   <p class="forecast-precipChance"></p>
+
+   <div class="tabs_wrapper">
+      <div class="tabs_links">
+         <div class="tabs_show tabs_link" id="tabs_link_daily">Daily</div>
+         <div class="tabs_link" id="tabs_link_hourly">Hourly</div>
+      </div>
+      <div id="tabs_content_daily" class="content_show tabs_content">Content Daily</div>
+      <div id="tabs_content_hourly" class="tabs_content">Content Hourly</div>
+   </div>
+</div>
 
 {{>footer}}
