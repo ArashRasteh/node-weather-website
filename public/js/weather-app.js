@@ -6,25 +6,36 @@ const weatherSearch = document.querySelector('form#weather-app input');
 const forecastMsg1 = document.querySelector('#forecast-1');
 const forecastMsg2 = document.querySelector('#forecast-2');
 const forecastWrapper = document.querySelector('#full-forecast');
+const recentLocationDiv = document.querySelector('.recent-locations');
 
 //Call global variables
 let forecast = {};
 let staticForecastIcons = new Array();
 const skycons = new Skycons({"monochrome": false});
 
+window.onload = function() {
+   if (getQueryVariable('location')) {
+      getWeatherData( getQueryVariable('location') );
+      // weatherSearch.value = getQueryVariable('location');
+   }
+};
 
 
 //prevent form from refreshing page and start the forecast fetching process
 weatherForm.addEventListener('submit', (e) => {
    e.preventDefault();
    
+   getWeatherData();
+   
+})
+
+
+
+const getWeatherData = (location = weatherSearch.value) => {
    //loading message
    forecastMsg1.style.display = "block";
    forecastMsg1.textContent = 'Loading..';
    forecastMsg2.textContent = '';
-
-   //get the value from the search field
-   const location = weatherSearch.value;
 
    //call the api to get the forecast
    fetch('/weather?address=' + (location)).then((response) => {
@@ -32,6 +43,8 @@ weatherForm.addEventListener('submit', (e) => {
          if (data.error) {
             return forecastMsg1.textContent = data.error;
          }
+
+         addRecentLocation(data.location);
 
          setUpCurrentTemp(data);
          setUpDailyHourlyTemp(data, "daily"); 
@@ -44,12 +57,14 @@ weatherForm.addEventListener('submit', (e) => {
 
       })
    })
-})
+}
 
 
 
 //given the forecast data from DarkSky API, populate the current temperature
 function setUpCurrentTemp(data) {
+
+   updateShowRecentLocations();
    
    forecast = data.forecast;
    console.log(forecast);
@@ -224,6 +239,41 @@ function setUpDailyHourTabs() {
 
 
 
+
+const addRecentLocation = (location) => {
+   let recentLocations = new Array();
+   if (getCookie('recentLocation')) {
+      recentLocations = JSON.parse(getCookie('recentLocation'));
+   }
+   if (recentLocations.indexOf(location) === -1) {
+      recentLocations.unshift(location);
+   }
+   setCookie('recentLocation',JSON.stringify(recentLocations),30);
+   console.log(JSON.parse(getCookie('recentLocation')));
+}
+
+const updateShowRecentLocations = () => {
+   // recentLocationDiv
+   let strToPrnt = '';
+
+   let recentLocations = [];
+   if (getCookie('recentLocation')) {
+      recentLocations = JSON.parse(getCookie('recentLocation'));
+      document.querySelector('.recent-locations-wrapper').style.display = 'flex'
+   }
+
+   for (let i = 0; i < recentLocations.length; i++) {
+      strToPrnt += '<a href="/?location=' + encodeURI(recentLocations[i]) + '">';
+      strToPrnt += recentLocations[i];
+      strToPrnt += '</a>'
+   }
+
+   recentLocationDiv.innerHTML = strToPrnt;
+}
+
+
+
+//functions from stackoverflow below:
 const nth = function(d) {
    if (d > 3 && d < 21) return 'th';
    switch (d % 10) {
@@ -232,4 +282,39 @@ const nth = function(d) {
      case 3:  return "rd";
      default: return "th";
    }
+}
+
+//https://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
+function getQueryVariable(variable) {
+   var query = window.location.search.substring(1);
+   var vars = query.split('&');
+   for (var i = 0; i < vars.length; i++) {
+       var pair = vars[i].split('=');
+       if (decodeURIComponent(pair[0]) == variable) {
+           return decodeURIComponent(pair[1]);
+       }
+   }
+   console.log('Query variable %s not found', variable);
+}
+
+//https://www.w3schools.com/js/js_cookies.asp
+function setCookie(cname, cvalue, exdays = 30) {
+   var d = new Date();
+   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+   var expires = "expires=" + d.toUTCString();
+   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+function getCookie(cname) {
+   var name = cname + "=";
+   var ca = document.cookie.split(';');
+   for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+         c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+         return c.substring(name.length, c.length);
+      }
+   }
+   return "";
 }
