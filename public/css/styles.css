@@ -16,6 +16,10 @@ div#main-content {
    flex-grow: 1;
 }
 
+a {
+   text-decoration: none;
+}
+
 footer {
    color: #888888;
    border-top: 1px solid #eeeeee;
@@ -25,7 +29,6 @@ footer {
 
 footer a {
    color: #737373;
-   text-decoration: none;
 }
 
 header {
@@ -72,133 +75,6 @@ img.menu-button {
 
 .page-About img.portrait {
    width: 250px;
-}
-
-form#weather-app {
-   display: flex;
-   width: 100%;
-   justify-content: center;
-   margin-bottom: 1rem;
-}
-
-form#weather-app input {
-   flex-grow: 1;
-   width: 60%;
-   width: calc( 100% - 85.7px);
-   max-width: 285px;
-}
-
-form#weather-app button {
-   border-left: none;
-}
-
-div#full-forecast {
-   text-align: center;
-}
-
-div#full-forecast p {
-   margin: 0.5rem 0;
-}
-
-div#full-forecast strong {
-   font-weight: 500;
-}
-
-.forecast-icon-degrees {
-   display: flex;
-   align-items: center;
-   justify-content: space-evenly;
-   flex-wrap: wrap;
-}
-
-.forecast-degrees {
-   font-size: 5rem;
-   color: #353545;
-   font-weight: 500;
-}
-
-.tabs_links {
-   position: relative;
-   display: flex;
-   border-bottom: 1px solid #333333;
-   margin-top: 1.5rem;
-}
-
-.tabs_link {
-   padding: 0.5rem 1rem;
-   margin-left: 0.5rem;
-   color: #888888;
-   border: 1px solid #888888;
-   border-bottom: 0;
-   border-top-right-radius: 0.4rem;
-   border-top-left-radius: 0.4rem;
-   cursor: pointer;
-}
-
-.tabs_link.tabs_show {
-   position: relative;
-   bottom: -1px;
-   border-color: #333333;
-   color: #333333;
-   border-bottom: 1px solid white;
-}
-
-.tabs_content {
-   display: none;
-   padding: 1rem 0 0 0.5rem;
-   border: 1px solid #888888;
-   border-top: 0;
-   border-bottom-right-radius: 0.5rem;
-   border-bottom-left-radius: 0.5rem;
-}
-
-.tabs_content.content_show {
-   display: block;
-}
-
-.future-forecast {
-   display: flex;
-   align-items: stretch;
-   padding: 0.5rem 0;
-}
-
-.future-forecast-time-date {
-   padding: 0.5rem 0.25rem;
-   min-width: 40px;
-   border: 1px solid #cccccc;
-   border-radius: 0.5rem;
-   border-top-right-radius: 0;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-}
-
-.future-forecast-temps-precip {
-   flex-grow: 1;
-   border-top: 1px solid #cccccc;
-   padding: 0.5rem 0.25rem;
-   display: flex;
-   justify-content: space-evenly;
-   align-items: center;
-   flex-wrap: wrap;
-}
-
-.temp-high, .temp-low, .precip-chance, .temp-actual-feels{
-   font-weight: 500;
-   font-size: 2rem;
-}
-
-.temp-high {
-   color: #8c0000;
-}
-
-.temp-low {
-   color: #6c6cff;
-}
-
-.future-forecast-temps-item-bottom {
-   font-size: 0.75rem;
-   font-weight: 500;
 }
 
 input {

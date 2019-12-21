@@ -7,8 +7,10 @@ const forecastMsg1 = document.querySelector('#forecast-1');
 const forecastMsg2 = document.querySelector('#forecast-2');
 const forecastWrapper = document.querySelector('#full-forecast');
 
-//calling forecast here lets me access it on the console in the web
+//Call global variables
 let forecast = {};
+let staticForecastIcons = new Array();
+const skycons = new Skycons({"monochrome": false});
 
 
 
@@ -32,10 +34,12 @@ weatherForm.addEventListener('submit', (e) => {
          }
 
          setUpCurrentTemp(data);
-         setUpDailyHourTabs();
          setUpDailyHourlyTemp(data, "daily"); 
          setUpDailyHourlyTemp(data, "hourly"); 
+         setUpDailyHourTabs();
          
+         skycons.play();
+
          forecastWrapper.style.display = "block";
 
       })
@@ -58,16 +62,16 @@ function setUpCurrentTemp(data) {
    const forecastTemp = document.querySelector('.forecast-degrees-num');
    const forecastSummary = document.querySelector('.forecast-summary');
    const forecastPrecipChance = document.querySelector('.forecast-precipChance');
+   const moreInfoButton = document.querySelector('#tabs_link_more');
 
    forecastMsg1.style.display = "none";
    forecastMsg2.style.display = "none";
 
    //Update fields on webpage
    forecastCity.textContent = data.location;
+   moreInfoButton.href = "https://darksky.net/forecast/" + forecast.latitude + ',' + forecast.longitude;
    forecastDate.textContent = unixConv(forecast.daily.data[0].temperatureHighTime, 'dateSemiFull');
-   var skycons = new Skycons({"monochrome": false});
    skycons.add("forecast-icon", Skycons[forecast.currently.icon.toUpperCase().replace(/-/g, "_")]);
-   skycons.play();   
    forecastTemp.textContent = Math.round(forecast.currently.apparentTemperature);
    forecastSummary.textContent = forecast.minutely && forecast.minutely.summary ? ("Summary: " + forecast.minutely.summary) : '';
    forecastPrecipChance.innerHTML = '<strong>' + Math.round(forecast.daily.data[0].precipProbability*10)/10 + '%</strong> chance of ' + 
@@ -97,7 +101,7 @@ function setUpDailyHourlyTemp(data,datasetVal = "daily") {
       let nthOfMo = nth(dayOfMonth);
       let timeOfDay = date.getHours()%12 !== 0 ? date.getHours()%12 : 12 ;
       let ampm = date.getHours() < 12 ? 'AM' : 'PM' ;
-      let precipChance = Math.round(dataset[i].precipProbability);
+      let precipChance = Math.round(dataset[i].precipProbability*100);
       let precipType = dataset[i].precipType || 'precip';
 
       strToPrnt+= '<div class="future-forecast">';
@@ -154,7 +158,7 @@ function setUpDailyHourlyTemp(data,datasetVal = "daily") {
                   strToPrnt += '</div><!-- end .future-forecast-temps-item-bottom -->';
                strToPrnt += '</div><!-- end .future-forecast-temps-item -->';
             }
-            // (forecast.daily.data[0].precipType || 'precipitation')
+            
             strToPrnt += '<div class="future-forecast-temps-item">';
                strToPrnt += '<div class="future-forecast-temps-item-top">';
                   strToPrnt += '<div class="precip-chance">' + precipChance + '%</div>'
@@ -163,7 +167,23 @@ function setUpDailyHourlyTemp(data,datasetVal = "daily") {
                   strToPrnt += precipType;
                strToPrnt += '</div><!-- end .future-forecast-temps-item-bottom -->';
             strToPrnt += '</div><!-- end .future-forecast-temps-item -->';
+
+            let canvasID = 'forecast-icon-' + datasetVal + i;
+            strToPrnt += '<div class="future-forecast-temps-item">';
+               strToPrnt += '<canvas id="' + canvasID + '" width="49" height="49"></canvas>';
+            strToPrnt += '</div><!-- end .future-forecast-temps-item -->';
+            staticForecastIcons.push({
+               canvasID,
+               icon: dataset[i].icon.toUpperCase().replace(/-/g, "_")
+            })
+
+            strToPrnt += '<div class="future-forecast-temps-item fullWidth">';
+               strToPrnt += dataset[i].summary;
+            strToPrnt += '</div><!-- end .future-forecast-temps-item.fullWidth -->';
+
          strToPrnt += '</div><!-- end .future-forecast-temps-precip -->';
+
+         
 
       strToPrnt+= '</div><!-- end .future-forecast -->';
    }
@@ -195,6 +215,11 @@ function setUpDailyHourTabs() {
       contentDaily.classList.remove("content_show");
       contentHourly.classList.add("content_show");
    });    
+
+   for (let i = 0; i < staticForecastIcons.length; i++) {
+      const {canvasID, icon} = staticForecastIcons[i];
+      skycons.add(canvasID, Skycons[icon]);
+   }
 }
 
 
@@ -207,4 +232,4 @@ const nth = function(d) {
      case 3:  return "rd";
      default: return "th";
    }
- }
+}

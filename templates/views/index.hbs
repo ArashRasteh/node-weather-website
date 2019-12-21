@@ -1,6 +1,6 @@
 {{>header}}
 
-{{!-- <p>Use this site to get your weather!</p> --}}
+<link rel="stylesheet" href="/css/weather-app.css">
 
 <form id="weather-app" >
    <input type="text" placeholder="Location" name="location">
@@ -26,10 +26,20 @@
       <div class="tabs_links">
          <div class="tabs_show tabs_link" id="tabs_link_daily">Daily</div>
          <div class="tabs_link" id="tabs_link_hourly">Hourly</div>
+         
+         
       </div>
       <div id="tabs_content_daily" class="content_show tabs_content">Content Daily</div>
       <div id="tabs_content_hourly" class="tabs_content">Content Hourly</div>
    </div>
+   <a href="https://darksky.net/forecast/" id="tabs_link_more" target="_blank" class="">
+      More from Darksky.net
+   </a>
+
 </div>
+
+<script src="/js/timeConverter.js"></script>
+<script src="/js/skycons.js"></script>
+<script src="/js/weather-app.js"></script>
 
 {{>footer}}
