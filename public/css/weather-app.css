@@ -142,9 +142,10 @@ div#full-forecast strong {
 }
 
 .recent-locations {
-   max-height: 72px;
-   overflow-y: auto;
+   /* max-height: 72px;
+   overflow-y: auto; */
 }
+
 
 .temp-high, .temp-low, .precip-chance, .temp-actual-feels{
    font-weight: 500;

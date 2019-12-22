@@ -239,19 +239,24 @@ function setUpDailyHourTabs() {
 
 
 
-
+//Add a new location to recent locations
 const addRecentLocation = (location) => {
    let recentLocations = new Array();
    if (getCookie('recentLocation')) {
       recentLocations = JSON.parse(getCookie('recentLocation'));
    }
    if (recentLocations.indexOf(location) === -1) {
+      if (recentLocations.length >= 3) recentLocations.pop();
+      recentLocations.unshift(location);
+   } else {
+      recentLocations.splice(recentLocations.indexOf(location),1);
       recentLocations.unshift(location);
    }
    setCookie('recentLocation',JSON.stringify(recentLocations),30);
    console.log(JSON.parse(getCookie('recentLocation')));
 }
 
+//actually show recent locations
 const updateShowRecentLocations = () => {
    // recentLocationDiv
    let strToPrnt = '';
