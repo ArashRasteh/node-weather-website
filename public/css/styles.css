@@ -1,4 +1,5 @@
 /* Using Font system-ui from jonathantneal/system-font-css */
+
 body {
    color: #333333;
    font-family: "system-ui", sans-serif;
@@ -6,7 +7,6 @@ body {
    max-width: 650px;
    margin: 0 auto;
    padding: 0 16px;
-   
    display: flex;
    flex-direction: column;
    min-height: 100vh;
@@ -43,6 +43,19 @@ header h1 {
    margin: 0;
 }
 
+input {
+   border: 1px solid #cccccc;
+   padding: 8px;
+}
+
+button {
+   cursor: pointer;
+   border: 1px solid #888888;
+   background: #717171;
+   color: white;
+   padding: 8px;
+}
+
 .menu-bar {
    position: relative;
 }
@@ -77,15 +90,13 @@ img.menu-button {
    width: 250px;
 }
 
-input {
-   border: 1px solid #cccccc;
-   padding: 8px;
-}
-
-button {
-   cursor: pointer;
-   border: 1px solid #888888;
-   background: #717171;
-   color: white;
-   padding: 8px;
+.screen-reader-only {
+   position: absolute;
+   height: 1px;
+   width: 1px;
+   clip: rect(1px 1px 1px 1px); 
+   clip: rect(1px, 1px, 1px, 1px);
+   clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
+   -webkit-clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
+   overflow: hidden !important;
 }

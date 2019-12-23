@@ -1,5 +1,10 @@
 {{>header}}
 
+
+<script>
+   var zipData = {{#if zipDataExist}}{{{zipData}}}{{else}}undefined{{/if}};
+</script>
+
 <link rel="stylesheet" href="/css/weather-app.css">
 
 <div class="recent-locations-wrapper" style="display: none;">
@@ -9,12 +14,14 @@
 
 
 <form id="weather-app" >
-   <input type="text" placeholder="Location" name="location">
+   <label for="location-input" class="screen-reader-only">Location</label>
+   <input type="text" placeholder="Location" name="location" id="location-input">
    <button>Search</button>
 </form>
 
 <p id="forecast-1" style="text-align: center;">Use the search above for your location's Weather.</p>
-<p id="forecast-2" style="margin-bottom: 3rem; text-align: center;"></p>
+<p id="forecast-2" style="margin-bottom: 3rem; text-align: center;">
+   {{{errorMessage}}}</p>
 
 <div id="full-forecast" style="display: none;">
    <p class="forecast-city"></p>
@@ -38,7 +45,7 @@
       <div id="tabs_content_daily" class="content_show tabs_content">Content Daily</div>
       <div id="tabs_content_hourly" class="tabs_content">Content Hourly</div>
    </div>
-   <a href="https://darksky.net/forecast/" id="tabs_link_more" target="_blank" class="">
+   <a href="https://darksky.net/forecast/" id="tabs_link_more" target="_blank" rel="noreferrer">
       More from Darksky.net
    </a>
 

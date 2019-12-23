@@ -1,6 +1,8 @@
 # Node Weather Website
 
-A live version can be found at: https://rasteh-weather-application.herokuapp.com/
+<p>A live version can be found at: https://rasteh-weather-application.herokuapp.com/</p>
+
+<p>Can also used /zip/[any zip code] to get the weather for that zip code</p>
 
 <p><strong>Resources used:</strong></p>
 

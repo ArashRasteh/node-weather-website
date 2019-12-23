@@ -17,7 +17,10 @@ window.onload = function() {
    if (getQueryVariable('location')) {
       getWeatherData( getQueryVariable('location') );
       // weatherSearch.value = getQueryVariable('location');
+   } else if (zipData) {
+      getWeatherData('byZip');
    }
+   updateShowRecentLocations();
 };
 
 
@@ -38,33 +41,39 @@ const getWeatherData = (location = weatherSearch.value) => {
    forecastMsg2.textContent = '';
 
    //call the api to get the forecast
-   fetch('/weather?address=' + (location)).then((response) => {
-      response.json().then((data) => {
-         if (data.error) {
-            return forecastMsg1.textContent = data.error;
-         }
+   if (location == 'byZip') {
+      fetch( '/weather?zip=' + zipData[0] + '&lat=' + zipData[1] + '&long=' + zipData[2] + '&city=' + zipData[3] + '&state=' + zipData[4] ).then( setUpAfterGetWeatherData )
+   } else {
+      fetch('/weather?address=' + (location)).then( setUpAfterGetWeatherData )
+   }
 
-         addRecentLocation(data.location);
+}
 
-         setUpCurrentTemp(data);
-         setUpDailyHourlyTemp(data, "daily"); 
-         setUpDailyHourlyTemp(data, "hourly"); 
-         setUpDailyHourTabs();
-         
-         skycons.play();
+const setUpAfterGetWeatherData = (response) => {
+   response.json().then((data) => {
+      if (data.error) {
+         return forecastMsg1.textContent = data.error;
+      }
 
-         forecastWrapper.style.display = "block";
+      addRecentLocation(data.location);
 
-      })
+      setUpCurrentTemp(data);
+      setUpDailyHourlyTemp(data, "daily"); 
+      setUpDailyHourlyTemp(data, "hourly"); 
+      setUpDailyHourTabs();
+
+      updateShowRecentLocations();
+      
+      skycons.play();
+
+      forecastWrapper.style.display = "block";
+
    })
 }
 
 
-
 //given the forecast data from DarkSky API, populate the current temperature
 function setUpCurrentTemp(data) {
-
-   updateShowRecentLocations();
    
    forecast = data.forecast;
    console.log(forecast);
@@ -246,7 +255,7 @@ const addRecentLocation = (location) => {
       recentLocations = JSON.parse(getCookie('recentLocation'));
    }
    if (recentLocations.indexOf(location) === -1) {
-      if (recentLocations.length >= 3) recentLocations.pop();
+      if (recentLocations.length >= 4) recentLocations.pop();
       recentLocations.unshift(location);
    } else {
       recentLocations.splice(recentLocations.indexOf(location),1);
@@ -259,15 +268,18 @@ const addRecentLocation = (location) => {
 //actually show recent locations
 const updateShowRecentLocations = () => {
    // recentLocationDiv
+   
+   const currentLocation = document.querySelector('.forecast-city').textContent ||getQueryVariable('location');
    let strToPrnt = '';
 
-   let recentLocations = [];
+   let recentLocations = []; //let on purpose
    if (getCookie('recentLocation')) {
       recentLocations = JSON.parse(getCookie('recentLocation'));
       document.querySelector('.recent-locations-wrapper').style.display = 'flex'
    }
 
    for (let i = 0; i < recentLocations.length; i++) {
+      if(recentLocations[i] === currentLocation) continue;
       strToPrnt += '<a href="/?location=' + encodeURI(recentLocations[i]) + '">';
       strToPrnt += recentLocations[i];
       strToPrnt += '</a>'
@@ -299,7 +311,7 @@ function getQueryVariable(variable) {
            return decodeURIComponent(pair[1]);
        }
    }
-   console.log('Query variable %s not found', variable);
+   // console.log('Query variable %s not found', variable);
 }
 
 //https://www.w3schools.com/js/js_cookies.asp

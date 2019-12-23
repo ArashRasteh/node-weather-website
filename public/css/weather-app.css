@@ -58,8 +58,9 @@ div#full-forecast strong {
    display: block;
    padding: 0.5rem 1rem;
    margin-left: 0.5rem;
-   color: #888888;
-   border: 1px solid #888888;
+   color: #333333;
+   background-color: #ececec;
+   border: 1px solid #333333;
    border-bottom: 0;
    border-top-right-radius: 0.4rem;
    border-top-left-radius: 0.4rem;
@@ -68,9 +69,8 @@ div#full-forecast strong {
 
 .tabs_link.tabs_show {
    position: relative;
+   background-color: inherit;
    bottom: -1px;
-   border-color: #333333;
-   color: #333333;
    border-bottom: 1px solid white;
 }
 
@@ -138,13 +138,14 @@ div#full-forecast strong {
 
 .recent-locations-wrapper a {
    display: block;
-   margin-bottom: 0.5rem;
+   margin-bottom: 0.7rem;
+   color: #4949ab;
 }
 
-.recent-locations {
-   /* max-height: 72px;
-   overflow-y: auto; */
-}
+/* .recent-locations {
+   max-height: 72px;
+   overflow-y: auto; 
+} */
 
 
 .temp-high, .temp-low, .precip-chance, .temp-actual-feels{
@@ -168,8 +169,8 @@ div#full-forecast strong {
 a#tabs_link_more {
    display: block;
    color: white;
-   background-color: #888888;
-   border: 1px solid #888888;
+   background-color: #333333;
+   border: 1px solid #333333;
    border-bottom-right-radius: 0.5rem;
    border-bottom-left-radius: 0.5rem;
    border-top: 0;
