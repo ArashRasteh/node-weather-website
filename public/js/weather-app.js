@@ -10,7 +10,7 @@ const recentLocationDiv = document.querySelector('.recent-locations');
 
 //Call global variables
 let forecast = {};
-let staticForecastIcons = new Array();
+const mainIcon = new Skycons({"monochrome": false});
 const skycons = new Skycons({"monochrome": false});
 
 window.onload = function() {
@@ -19,8 +19,10 @@ window.onload = function() {
       // weatherSearch.value = getQueryVariable('location');
    } else if (zipData) {
       getWeatherData('byZip');
+   } else {
+      updateShowRecentLocations();
    }
-   updateShowRecentLocations();
+   
 };
 
 
@@ -63,8 +65,9 @@ const setUpAfterGetWeatherData = (response) => {
       setUpDailyHourTabs();
 
       updateShowRecentLocations();
+
       
-      skycons.play();
+      mainIcon.play();
 
       forecastWrapper.style.display = "block";
 
@@ -95,7 +98,7 @@ function setUpCurrentTemp(data) {
    forecastCity.textContent = data.location;
    moreInfoButton.href = "https://darksky.net/forecast/" + forecast.latitude + ',' + forecast.longitude;
    forecastDate.textContent = unixConv(forecast.daily.data[0].temperatureHighTime, 'dateSemiFull');
-   skycons.add("forecast-icon", Skycons[forecast.currently.icon.toUpperCase().replace(/-/g, "_")]);
+   mainIcon.add("forecast-icon", Skycons[forecast.currently.icon.toUpperCase().replace(/-/g, "_")]);
    forecastTemp.textContent = Math.round(forecast.currently.apparentTemperature);
    forecastSummary.textContent = forecast.minutely && forecast.minutely.summary ? ("Summary: " + forecast.minutely.summary) : '';
    forecastPrecipChance.innerHTML = '<strong>' + Math.round(forecast.daily.data[0].precipProbability*10)/10 + '%</strong> chance of ' + 
@@ -196,10 +199,16 @@ function setUpDailyHourlyTemp(data,datasetVal = "daily") {
             strToPrnt += '<div class="future-forecast-temps-item">';
                strToPrnt += '<canvas id="' + canvasID + '" width="49" height="49"></canvas>';
             strToPrnt += '</div><!-- end .future-forecast-temps-item -->';
-            staticForecastIcons.push({
-               canvasID,
-               icon: dataset[i].icon.toUpperCase().replace(/-/g, "_")
-            })
+            if (datasetVal === "daily") {
+               setTimeout(()=> {
+                  mainIcon.add(canvasID, Skycons[dataset[i].icon.toUpperCase().replace(/-/g, "_")]);
+               },250)
+            } else {
+               setTimeout(()=> {
+                  skycons.add(canvasID, Skycons[dataset[i].icon.toUpperCase().replace(/-/g, "_")]);
+               },250)
+            }
+            
 
             strToPrnt += '<div class="future-forecast-temps-item fullWidth">';
                strToPrnt += dataset[i].summary;
@@ -238,12 +247,7 @@ function setUpDailyHourTabs() {
       tabHourly.classList.add("tabs_show");
       contentDaily.classList.remove("content_show");
       contentHourly.classList.add("content_show");
-   });    
-
-   for (let i = 0; i < staticForecastIcons.length; i++) {
-      const {canvasID, icon} = staticForecastIcons[i];
-      skycons.add(canvasID, Skycons[icon]);
-   }
+   });
 }
 
 
@@ -267,7 +271,7 @@ const addRecentLocation = (location) => {
 
 //actually show recent locations
 const updateShowRecentLocations = () => {
-   // recentLocationDiv
+   const recLocWrap = document.querySelector('.recent-locations-wrapper');
    
    const currentLocation = document.querySelector('.forecast-city').textContent ||getQueryVariable('location');
    let strToPrnt = '';
@@ -275,17 +279,25 @@ const updateShowRecentLocations = () => {
    let recentLocations = []; //let on purpose
    if (getCookie('recentLocation')) {
       recentLocations = JSON.parse(getCookie('recentLocation'));
-      document.querySelector('.recent-locations-wrapper').style.display = 'flex'
    }
+   console.log('test')
 
    for (let i = 0; i < recentLocations.length; i++) {
-      if(recentLocations[i] === currentLocation) continue;
+      if(recentLocations[i] === currentLocation) {
+         if (recentLocations.length === 1) {
+            recLocWrap.style.display = 'none';
+            return;
+         }
+         continue;
+      } 
+
       strToPrnt += '<a href="/?location=' + encodeURI(recentLocations[i]) + '">';
       strToPrnt += recentLocations[i];
       strToPrnt += '</a>'
    }
-
    recentLocationDiv.innerHTML = strToPrnt;
+   
+   recLocWrap.style.display = 'flex';
 }
 
 
