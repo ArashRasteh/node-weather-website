@@ -2,7 +2,7 @@
 
 <p>A live version can be found at: https://rasteh-weather-application.herokuapp.com/</p>
 
-<p>Can also use /zip/[any zip code] to get the weather for that zip code</p>
+<p>Can also use /zip/[any zip code] to get the weather for that zip code, is slightly faster, because skips having to talk to mapbox and uses zip code data stored in server. Zip code source files found here: https://github.com/ArashRasteh/US-Zip-Codes-JSON</p>
 
 <p><strong>Resources used:</strong></p>
 
